@@ -1,15 +1,12 @@
 clear all
 
 smax = 130;
-
+% s= u*t/b
 b = 0.5; % = c/2
 c = 1;
 
-U_gust = 0.65;
-U_fs = 1;
 
-
-alpha0 = 0.1; % Constant angle of attack
+alpha0 = 0.5; % Constant angle of attack
 dsigma = 0.001; % integral d(sigma)
 ds = 0.5;
 
@@ -18,20 +15,18 @@ num = round(smax/ds);
 I = zeros([1,num+1]);
 cl = zeros([1,num+1]);
 
-%lambda = U_fs/(U_fs + U_gust);
-%U0 = (U_fs + U_gust)^2/(2*U_fs + U_gust);
-lambda = 0;
-U0=1;
-omega = 0.37;
+U0=10;
 
 for i = 0:1:num
     s = i*ds;
     for sigma = 0:dsigma:s
-        I(i+1) = I(i+1) + alpha0*U(sigma,c,U_fs,U0,omega,lambda)*dWagnerds(s-sigma)*dsigma;
+        I(i+1) = I(i+1) + alpha0*U(sigma,U0)*dWagnerds(s-sigma)*dsigma;
     end
-    a = [pi*b*dUdt(s,b,U_fs,U0,omega,lambda)*alpha0/U(s,b,U_fs,U0,omega,lambda)^2,(2*pi/U(s,b,U_fs,U0,omega,lambda))*(U(s,b,U_fs,U0,omega,lambda)*alpha0/2),(2*pi/U(s,b,U_fs,U0,omega,lambda))*I(i+1)];
-    disp(a);
-    cl(i+1) = pi*b*dUdt(s,b,U_fs,U0,omega,lambda)*alpha0/U(s,b,U_fs,U0,omega,lambda)^2 + (2*pi/U(s,b,U_fs,U0,omega,lambda))*(U(s,b,U_fs,U0,omega,lambda)*alpha0/2 + I(i+1)) ;
+    %a = [pi*b*dUdt(s,b,U_fs,U0,omega,lambda)*alpha0/U(s,U0)^2,(2*pi/U(s,U0))*(U(s,U0)*alpha0/2),(2*pi/U(s,U0))*I(i+1)];
+    %a = a/sum(a); 
+    %added mass, circulatory 1 & 2
+    %disp(a);
+    cl(i+1) = pi*b*dUds(s,U0)*alpha0/U(s,U0) + (2*pi/U(s,U0))*(U(s,U0)*alpha0/2 + I(i+1)) ;
 end
 
 %%
@@ -45,7 +40,7 @@ s_array = 0:ds:smax;
 cl_wagner = zeros([1,num+1]);
 for i = 1:1:num+1
     s = i*ds;
-    cl_wagner(i) = wagner_s(s-ds);
+    cl_wagner(i) = Wagner(s-ds);
 end
 
 figure(1)

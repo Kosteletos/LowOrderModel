@@ -1,6 +1,6 @@
-function [U] = U(s,b,U_fs,U0,omega,lambda)
+function [U] = U(s,U0)
 
-U = U0*(1 + lambda*sin(omega*s*b/U_fs)); 
+U = sqrt(2*s*U0); 
 
 end
 

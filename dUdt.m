@@ -1,6 +1,6 @@
-function [dUdt] = dUdt(s,b,U_fs,U0,omega,lambda)
+function [dUdt] = dUdt(s,U0,b)
 
-dUdt = U0*lambda*omega*cos(omega*s*b/U_fs);
+dUdt = U0^2/b;
 
 end
 

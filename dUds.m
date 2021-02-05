@@ -1,6 +1,6 @@
-function [dUds] = dUds(s,b,U_fs,U0,omega,lambda)
+function [dUds] = dUds(s,U0)
 
-dUds = (U0/U_fs)*omega*b*lambda*cos(omega*s*b/U_fs);
+dUds = sqrt(U0/(2*s));
 
 end
 
