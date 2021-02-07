@@ -1,5 +1,5 @@
-function [alpha] = alpha(s)
+function [Alpha] = Alpha(s)
 
-alpha = 0.1;
+Alpha = 0.1;
 end
 

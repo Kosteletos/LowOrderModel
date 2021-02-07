@@ -1,6 +1,6 @@
-function [dUdt] = dUdt(s,U0)
+function [dUdt] = dUdt(s,accel)
 c=0.12;
-dUdt = 2*U0^2/c;
+dUdt = accel;
 
 end
 

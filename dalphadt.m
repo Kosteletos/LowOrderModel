@@ -1,5 +1,5 @@
-function [dalphadt] = dalphadt(s)
+function [dAlphadt] = dAlphadt(s)
 
-dalphadt = 0;
+dAlphadt = 0;
 end
 
