@@ -12,6 +12,8 @@ dsigma = 0.001; % integral d(sigma)
 num = round(tmax/dt);
 
 I = zeros([1,num+1]);
+added_mass = zeros([1,num+1]);
+circulatory = zeros([1,num+1]);
 lift = zeros([1,num+1]);
 
 accel=0.6;
@@ -30,8 +32,9 @@ for i = 0:1:num
     %added mass, circulatory 1 & 2
     disp(a);
     
-    clv2 = (pi*c/2)*(Alpha(s)*dUdt(s,accel) + dAlphadt(s)*U(s,accel)) + (2*pi*U(s,accel))*(U(0,accel)*Alpha(0)*Wagner(s) + I(i+1));
-    lift(i+1) = clv2*0.5*rho*c;
+    added_mass(i+1) = (pi*c/2)*(Alpha(s)*dUdt(s,accel) + dAlphadt(s)*U(s,accel));
+    circulatory(i+1) = (2*pi*U(s,accel))*(U(0,accel)*Alpha(0)*Wagner(s) + I(i+1));
+    lift(i+1) = 0.5*rho*c*(added_mass(i+1) + circulatory(i+1));
 end
 
 %%
@@ -52,11 +55,13 @@ s_array = 0.5*accel*t_array.^2;
 
 figure(2)
 plot(s_array/c,lift);
-hold on 
+hold on
+plot(s_array/c,added_mass*0.5*rho*c);
+plot(s_array/c,circulatory*0.5*rho*c);
 %plot([1,140],[1,1])
 %plot(s_array/c,cl_wagner);
 hold off
-%legend("c_l general","c_l Wagner","Location","Southeast")
+legend("c_l","c_l added mass", "c_l circulatory","Location","Northwest")
 xlabel('s/c')
 ylabel('unsteady lift [N]')
 %ylim([0.8,3.5])
