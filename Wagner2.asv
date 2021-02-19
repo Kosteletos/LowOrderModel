@@ -1,0 +1,8 @@
+function [phi] = Wagner2(s)
+%Different approximation to Wagner
+
+c = 0.12;
+
+phi = 1 - 1/(2 + s./c);
+end
+
