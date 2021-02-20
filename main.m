@@ -3,12 +3,11 @@ clear all
 % Simulation Options
 tmax = 1;
 dt = 0.01;
-c = 0.1;
-rho = 1000;
+c = 1;
 dsigma = 0.001; % integral d(sigma)
 
 % Kinematics
-accel = 0.6;
+accel = 2; % [chords/s^2]    (5/3 chords/s = 0.2 m/s^2)
 
 % Iterate Options
 startIterateTime = 0.5; % [s]
@@ -41,7 +40,10 @@ while i <= num
     I(i+1) = 0;
     for sigma = 0:dsigma:s
         %integral (d(V*alpha)/dt|s=simga * Wagner(s-sigma) * d(sigma)
-        I(i+1) = I(i+1) + (Alpha(sigma,accel)*dUdt(sigma,accel) + dAlphadt(sigma,accel)*U(sigma,accel))*Wagner2(s-sigma,c)*dsigma;
+        I(i+1) = I(i+1) + (Alpha(sigma,accel)*dUdt(sigma,accel) + dAlphadt(sigma,accel)*U(sigma,accel))*Wagner2(s-sigma)*dsigma;
+
+        %I(i+1) = I(i+1) + (dWagner2ds(sigma)*Alpha(s-sigma,accel)*U(s-sigma,accel))*dsigma;
+        
         %a =[Alpha(sigma,accel),dUdt(sigma,accel),dAlphadt(sigma,accel),U(sigma,accel)];
         %disp(a);
     end
@@ -52,7 +54,7 @@ while i <= num
     
     
     added_mass(i+1) = (pi*c/2)/(accel^2)*(0.5*sin(2*Alpha(s,accel))*dUdt(s,accel) + dAlphadt(s,accel)*U(s,accel)*cos(Alpha(s,accel))^2);
-    circulatory(i+1) = (2*pi)/(accel)*(U(0,accel)*Alpha(0,accel)*Wagner2(s,c) + I(i+1));
+    circulatory(i+1) = (2.185)*(2*pi)/(accel^2)*(U(0,accel)*Alpha(0,accel)*Wagner2(s) + I(i+1));
     lift(i+1) = added_mass(i+1) + circulatory(i+1);
 
     
@@ -83,10 +85,10 @@ s_array = 0.5*accel*t_array.^2;
 
 % Lift - Displacement
 figure(2)
-plot(s_array/c,lift);
+plot(s_array,lift);
 hold on
-plot(s_array/c,added_mass);
-plot(s_array/c,circulatory);
+plot(s_array,added_mass);
+plot(s_array,circulatory);
 hold off
 legend("Total Lift","Added Mass", "Circulatory","Location","Northwest")
 xlabel('Displacement s / c')
@@ -116,7 +118,7 @@ t_array = 0:dt:tmax;
 s_array = 0.5*accel*t_array.^2;
 
 figure(4)
-plot(s_array/c,I);
+plot(s_array,I);
 xlabel('Displacement s/c')
 ylabel('I')
 legend("1","0.1","0.01","0.001","0.0001")
