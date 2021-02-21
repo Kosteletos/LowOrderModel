@@ -55,7 +55,7 @@ while i <= num
     end
     
     added_mass(i) = (pi*c/2)/(U(end)^2)*(0.5*sin(2*Alpha(i))*dUdt(i) + dAlphadt(i)*U(i)*cos(Alpha(i))^2);
-    circulatory(i) = (2.185)*(2*pi)/(U(end)^2)*(U(1)*Alpha(1)*Wagner2(s(i)) + I(i));
+    circulatory(i) = (2.185)*(2*pi)/(U(end))*(U(1)*Alpha(1)*Wagner2(s(i)) + I(i)/U(end));
     lift(i) = added_mass(i) + circulatory(i);
 
     if ((iterate == 1) && (iterateFlag == 0) && (t(i)>startIterateTime))
@@ -77,6 +77,8 @@ while i <= num
 end
 
 plotLiftCoefficient(lift,added_mass,circulatory,accel,dt,tmax);
+
+plotAlpha(Alpha,accel,dt,tmax)
 
 %plotIntegral(I,accel,dt,tmax);
 

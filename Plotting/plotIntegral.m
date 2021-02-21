@@ -3,7 +3,7 @@ function plotIntegral(I,accel,dt,tmax)
     t_array = 0:dt:tmax;
     s_array = 0.5*accel*t_array.^2;
 
-    figure(4)
+    figure(5)
     plot(s_array,I);
     xlabel('Displacement s/c')
     ylabel('I')

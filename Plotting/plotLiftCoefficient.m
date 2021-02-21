@@ -5,7 +5,7 @@ t_array = 0:dt:tmax;
 s_array = 0.5*accel*t_array.^2;
 
 % Lift - Displacement
-figure(2)
+figure(1)
 plot(s_array,lift);
 hold on
 plot(s_array,added_mass);
@@ -19,7 +19,7 @@ title('LOM  Lift - Displacement')
 %xlim([0,10])
 
 % Lift - Time
-figure(3)
+figure(2)
 plot(t_array, lift);
 hold on 
 plot(t_array,added_mass);
