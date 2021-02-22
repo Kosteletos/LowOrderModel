@@ -4,6 +4,7 @@ addpath(genpath(pwd))
 % Simulation Options
 tmax = 1;
 dt = 0.01;
+dsigma = 0.001; % integral d(sigma)
 
 % Kinematics
 accel = 2; % [chords/s^2]    (5/3 chords/s = 0.2 m/s^2)
@@ -50,20 +51,20 @@ while i <= num
         
         % Leishman
         %integral (d(V*alpha)/dt|s=simga * Wagner(s-sigma) * d(sigma)
-        I(i) = I(i) + (Alpha(sigma)*dUdt(sigma) + dAlphadt(sigma)*U(sigma))*Wagner2(2*s(i)-2*s(sigma))*2*dsigma;
+        %I(i) = I(i) + (Alpha(sigma)*dUdt(sigma) + dAlphadt(sigma)*U(sigma))*Wagner2(s(i)-s(sigma))*dsigma;
         
         % Ignacio
-        %I(i) = I(i) + (dWagner2ds(2*s(sigma))*Alpha(i +1 -sigma)*U(i +1 -sigma))*2*dsigma;
+        I(i) = I(i) + (dWagner2ds(s(sigma))*Alpha(i +1 -sigma)*U(i +1 -sigma))*dsigma;
        
     end
     
     added_mass(i) = (pi*c/2)/(U(end)^2)*(0.5*sin(2*Alpha(i))*dUdt(i) + dAlphadt(i)*U(i)*cos(Alpha(i))^2);
     
     % Leishman
-    circulatory(i) = (2*pi)/(U(end))*(U(1)*Alpha(1)*Wagner2(2*s(i)) + I(i)/U(end));
+    %circulatory(i) = (2.185)*(2*pi)/(U(end))*(U(1)*Alpha(1)*Wagner2(s(i)) + I(i)/U(end));
     
     % Ignacio
-    %circulatory(i) = (2*pi*U(i)/U(end)/2.19)*(U(i)*Alpha(i)*Wagner2(0) + I(i));
+    circulatory(i) = (2*pi)/(U(end))*(U(i)*Alpha(i)*Wagner2(0) + I(i));
     
     lift(i) = added_mass(i) + circulatory(i);
 
