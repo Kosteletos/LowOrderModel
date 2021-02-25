@@ -1,15 +1,21 @@
 function [ U, UDot, s] = translation(t,dt,accel)
 
-% U
+%% U
+% surge
 U = accel.*t;
 
-% dU/dt
+% 
+
+
+
+
+%% dU/dt
 UDot = gradient(U)/dt;
 
-% s
+%% s
 s = 0.5.*accel.*t.^2;
 
-% Real only
+%% Real only
 U = real(U); UDot = real(UDot);
 s = real(s);
 end

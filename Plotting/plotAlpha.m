@@ -1,5 +1,7 @@
 function plotAlpha(alpha,accel,dt,tmax)
 
+global folder subfolder
+
 %Displacement & time
 t_array = 0:dt:tmax;
 s_array = 0.5*accel*t_array.^2;
@@ -14,6 +16,7 @@ ylabel('Alpha [deg]')
 title('LOM  Alpha - Displacement')
 %ylim([0,1])
 %xlim([0,10])
+savefig(fullfile(folder,subfolder,"LOM alpha - displacement.fig"))
 
 % Alpha - Time
 figure(4)
@@ -23,4 +26,5 @@ ylabel('Alpha [deg]')
 title('LOM  Alpha - Time')
 %ylim([0,1])
 %xlim([0,10])
+savefig(fullfile(folder,subfolder,"LOM alpha - time.fig"))
 end

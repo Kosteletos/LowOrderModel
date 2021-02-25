@@ -1,16 +1,26 @@
 clear all
 addpath(genpath(pwd))
+tic
+
+global folder subfolder
 
 % Simulation Options
 tmax = 1;
 dt = 0.01;
 
 % Kinematics
-accel = 2; % [chords/s^2]    (5/3 chords/s = 0.2 m/s^2)
+accel = 1; % [chords/s^2]    (5/3 chords/s = 0.2 m/s^2)
 
 % Iterate Options
 startIterateTime = 0.5; % [s]
-iterate = 0;  %1 = true, 0 = false 
+iterate = 1;  %1 = true, 0 = false 
+
+% Plotting Options
+folder = "C:\Users\Tom\OneDrive - University of Cambridge\Uni Notes\IIB\Project\Low-Order Model\Figures\Comparison\Surge Gust Mitigation";
+subfolder = "accel = 1 chords, alpha = 0.3 rad";
+plotForces = 1; %1 = true, 0 = false 
+plotAoA = 1; %1 = true, 0 = false 
+plotI = 0; %1 = true, 0 = false 
 
 % Initialisations
 c = 1;
@@ -50,7 +60,7 @@ while i <= num
         
         % Leishman
         %integral (d(V*alpha)/dt|s=simga * Wagner(s-sigma) * d(sigma)
-        I(i) = I(i) + (Alpha(sigma)*dUdt(sigma) + dAlphadt(sigma)*U(sigma))*Wagner2(2*s(i)-2*s(sigma))*2*dsigma;
+        I(i) = I(i) + (Alpha(sigma)*dUdt(sigma) + dAlphadt(sigma)*U(sigma))*Wagner2(s(i)-s(sigma))*2*dsigma;
         
         % Ignacio
         %I(i) = I(i) + (dWagner2ds(2*s(sigma))*Alpha(i +1 -sigma)*U(i +1 -sigma))*2*dsigma;
@@ -60,7 +70,7 @@ while i <= num
     added_mass(i) = (pi*c/2)/(U(end)^2)*(0.5*sin(2*Alpha(i))*dUdt(i) + dAlphadt(i)*U(i)*cos(Alpha(i))^2);
     
     % Leishman
-    circulatory(i) = (2*pi)/(U(end))*(U(1)*Alpha(1)*Wagner2(2*s(i)) + I(i)/U(end));
+    circulatory(i) = (2*pi)/(U(end))*(U(1)*Alpha(1)*Wagner2(s(i)) + I(i)/U(end));
     
     % Ignacio
     %circulatory(i) = (2*pi*U(i)/U(end)/2.19)*(U(i)*Alpha(i)*Wagner2(0) + I(i));
@@ -84,10 +94,14 @@ while i <= num
         iterationCounter = 0;
     end
 end
+toc
 
-plotLiftCoefficient(lift,added_mass,circulatory,accel,dt,tmax);
-
-plotAlpha(Alpha,accel,dt,tmax)
-
-%plotIntegral(I,accel,dt,tmax);
-
+if plotForces == 1
+    plotLiftCoefficient(lift,added_mass,circulatory,accel,dt,tmax);
+end
+if plotAoA == 1
+    plotAlpha(Alpha,accel,dt,tmax)
+end
+if plotI == 1
+    plotIntegral(I,accel,dt,tmax);
+end

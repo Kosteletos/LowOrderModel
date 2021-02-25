@@ -4,7 +4,7 @@ function [alpha, alphaDot] = rotation(t, dt, i, iterateFlag, iterationCounter, d
 if iterateFlag == 0
 
     % Alpha
-    alpha = 0.1;
+    alpha = 0.3;
 
     % d(Alpha)Dt
     alphaDot = 0;
