@@ -5,11 +5,11 @@ tic
 global folder subfolder
 
 % Simulation Options
-tmax = 1;
+tmax = 2;
 dt = 0.01;
 
 % Kinematics
-accel = 1; % [chords/s^2]    (5/3 chords/s = 0.2 m/s^2)
+accel = 10; % [chords/s^2]    (5/3 chords/s = 0.2 m/s^2)
 
 % Iterate Options
 startIterateTime = 0.5; % [s]
@@ -17,10 +17,11 @@ iterate = 1;  %1 = true, 0 = false
 
 % Plotting Options
 folder = "C:\Users\Tom\OneDrive - University of Cambridge\Uni Notes\IIB\Project\Low-Order Model\Figures\Comparison\Surge Gust Mitigation";
-subfolder = "accel = 1 chords, alpha = 0.3 rad";
+subfolder = "accel = 10 chords, alpha = 0.3 rad, t = 3";
 plotForces = 1; %1 = true, 0 = false 
 plotAoA = 1; %1 = true, 0 = false 
-plotI = 0; %1 = true, 0 = false 
+plotI = 0; %1 = true, 0 = false
+plotTranslation = 1; %1 = true, 0 = false
 
 % Initialisations
 c = 1;
@@ -100,8 +101,11 @@ if plotForces == 1
     plotLiftCoefficient(lift,added_mass,circulatory,accel,dt,tmax);
 end
 if plotAoA == 1
-    plotAlpha(Alpha,accel,dt,tmax)
+    plotAlpha(Alpha,accel,dt,tmax);
 end
 if plotI == 1
     plotIntegral(I,accel,dt,tmax);
+end
+if plotTranslation == 1
+    plotKinematics(t,s,U);
 end
