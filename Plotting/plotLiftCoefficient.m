@@ -1,17 +1,13 @@
-function plotLiftCoefficient(lift,added_mass,circulatory,accel,dt,tmax)
+function plotLiftCoefficient(lift,added_mass,circulatory,s,t)
 
 global folder subfolder
 
-%Displacement & time
-t_array = 0:dt:tmax;
-s_array = 0.5*accel*t_array.^2;
-
 % Lift - Displacement
 figure(1)
-plot(s_array,lift);
+plot(s,lift);
 hold on
-plot(s_array,added_mass);
-plot(s_array,circulatory);
+plot(s,added_mass);
+plot(s,circulatory);
 hold off
 legend("Total Lift","Added Mass", "Circulatory","Location","Northwest")
 xlabel('Displacement s / c')
@@ -23,10 +19,10 @@ savefig(fullfile(folder,subfolder,"LOM lift - displacement.fig"))
 
 % Lift - Time
 figure(2)
-plot(t_array, lift);
+plot(t, lift);
 hold on 
-plot(t_array,added_mass);
-plot(t_array,circulatory);
+plot(t,added_mass);
+plot(t,circulatory);
 hold off
 legend("Total Lift","Added Mass", "Circulatory","Location","Northwest")
 xlabel('Time [s]')

@@ -9,15 +9,15 @@ tmax = 2;
 dt = 0.01;
 
 % Kinematics
-accel = 10; % [chords/s^2]    (5/3 chords/s = 0.2 m/s^2)
+accel = 0; % [chords/s^2]    (5/3 chords/s = 0.2 m/s^2)
 
 % Iterate Options
 startIterateTime = 0.5; % [s]
-iterate = 1;  %1 = true, 0 = false 
+iterate = 0;  %1 = true, 0 = false 
 
 % Plotting Options
-folder = "C:\Users\Tom\OneDrive - University of Cambridge\Uni Notes\IIB\Project\Low-Order Model\Figures\Comparison\Surge Gust Mitigation";
-subfolder = "accel = 10 chords, alpha = 0.3 rad, t = 3";
+folder = "C:\Users\Tom\OneDrive - University of Cambridge\Uni Notes\IIB\Project\Low-Order Model\Figures\Comparison\Steady State Acceleration";
+subfolder = "test";
 plotForces = 1; %1 = true, 0 = false 
 plotAoA = 1; %1 = true, 0 = false 
 plotI = 0; %1 = true, 0 = false
@@ -98,13 +98,13 @@ end
 toc
 
 if plotForces == 1
-    plotLiftCoefficient(lift,added_mass,circulatory,accel,dt,tmax);
+    plotLiftCoefficient(lift,added_mass,circulatory,s,t);
 end
 if plotAoA == 1
-    plotAlpha(Alpha,accel,dt,tmax);
+    plotAlpha(Alpha,s,t);
 end
 if plotI == 1
-    plotIntegral(I,accel,dt,tmax);
+    plotIntegral(I,s);
 end
 if plotTranslation == 1
     plotKinematics(t,s,U);
