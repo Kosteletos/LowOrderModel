@@ -3,8 +3,13 @@ function [alpha, alphaDot] = rotation(t, dt, i, iterateFlag, iterationCounter, d
 
 if iterateFlag == 0
 
+    % Prescribed rotation
+%     omega = 0.4;
+%     alpha = omega*t(i);
+%     alphaDot = omega;
+    
     % Alpha
-    alpha = 0.05;
+    alpha = 0.261799;
 
     % d(Alpha)Dt
     alphaDot = 0;
@@ -19,7 +24,7 @@ elseif iterateFlag ==1
     alpha0 = alphaIN(i-1);
     
     % Alpha
-    alpha = alphaPrev + deltaLift/100;
+    alpha = alphaPrev + deltaLift/1000;
 
     % d(Alpha)Dt
     alphaDot = (alpha - alpha0)/dt;     

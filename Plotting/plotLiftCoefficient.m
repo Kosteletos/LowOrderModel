@@ -1,4 +1,4 @@
-function plotLiftCoefficient(lift,added_mass,circulatory,s,t)
+function plotLiftCoefficient(lift,added_mass,added_mass_v,added_mass_a,circulatory,s,t)
 
 global folder subfolder
 
@@ -7,9 +7,11 @@ figure(1)
 plot(s,lift);
 hold on
 plot(s,added_mass);
+%plot(s,added_mass_a);
+%plot(s,added_mass_v);
 plot(s,circulatory);
 hold off
-legend("Total Lift","Added Mass", "Circulatory","Location","Northwest")
+legend("Total Lift","Added Mass","Circulatory","Location","Northwest")
 xlabel('Displacement s / c')
 ylabel('C_l')
 title('LOM  Lift - Displacement')

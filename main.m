@@ -1,22 +1,19 @@
-clear all
+clearvars %-except Alpha dAlphadt
 addpath(genpath(pwd))
 tic
 
 global folder subfolder
 
 % Simulation Options
-tmax = 2;
-dt = 0.01;
-
-% Kinematics
-accel = 0; % [chords/s^2]    (5/3 chords/s = 0.2 m/s^2)
+tmax = 58;
+dt = 0.002;
 
 % Iterate Options
-startIterateTime = 0.5; % [s]
+startIterateTime = 49.98; % [s]
 iterate = 0;  %1 = true, 0 = false 
 
 % Plotting Options
-folder = "C:\Users\Tom\OneDrive - University of Cambridge\Uni Notes\IIB\Project\Low-Order Model\Figures\Comparison\Steady State Acceleration";
+folder = "C:\Users\Tom\OneDrive - University of Cambridge\Uni Notes\IIB\Project\Low-Order Model\Figures\Comparison\Accel_Decel";
 subfolder = "test";
 plotForces = 1; %1 = true, 0 = false 
 plotAoA = 1; %1 = true, 0 = false 
@@ -29,6 +26,8 @@ t = 0:dt:tmax;
 num = round(tmax/dt)+1;
 I = zeros([1,num]);
 added_mass = zeros([1,num]);
+added_mass_v = zeros([1,num]);
+added_mass_a = zeros([1,num]);
 circulatory = zeros([1,num]);
 lift = zeros([1,num]);
 Alpha = zeros([1,num]);
@@ -38,7 +37,7 @@ targetLift = 0;
 iterationCounter = 0;
 deltaLift =0;
 
-[U, dUdt, s] = translation(t,dt,accel);
+[U, dUdt, s] = translation(t,dt);
 
 i = 1;
 while i <= num 
@@ -61,17 +60,19 @@ while i <= num
         
         % Leishman
         %integral (d(V*alpha)/dt|s=simga * Wagner(s-sigma) * d(sigma)
-        I(i) = I(i) + (Alpha(sigma)*dUdt(sigma) + dAlphadt(sigma)*U(sigma))*Wagner2(s(i)-s(sigma))*2*dsigma;
+        I(i) = I(i) + (2*Alpha(sigma)*dUdt(sigma) + dAlphadt(sigma)*U(sigma))*Wagner2(s(i)-s(sigma))*dsigma;
         
         % Ignacio
         %I(i) = I(i) + (dWagner2ds(2*s(sigma))*Alpha(i +1 -sigma)*U(i +1 -sigma))*2*dsigma;
        
     end
     
-    added_mass(i) = (pi*c/2)/(U(end)^2)*(0.5*sin(2*Alpha(i))*dUdt(i) + dAlphadt(i)*U(i)*cos(Alpha(i))^2);
+    added_mass(i) = (pi*c/2)/(U(101)^2)*(0.5*sin(2*Alpha(i))*dUdt(i) + dAlphadt(i)*U(i)*cos(Alpha(i))^2);
+    added_mass_a(i) = (pi*c/2)/(U(101)^2)*(dAlphadt(i)*U(i)*cos(Alpha(i))^2);
+    added_mass_v(i) = (pi*c/2)/(U(101)^2)*(0.5*sin(2*Alpha(i))*dUdt(i));
     
     % Leishman
-    circulatory(i) = (2*pi)/(U(end))*(U(1)*Alpha(1)*Wagner2(s(i)) + I(i)/U(end));
+    circulatory(i) = (2*pi)/(U(101))*(U(1)*Alpha(1)*Wagner2(s(i)) + I(i)/U(101));
     
     % Ignacio
     %circulatory(i) = (2*pi*U(i)/U(end)/2.19)*(U(i)*Alpha(i)*Wagner2(0) + I(i));
@@ -98,7 +99,7 @@ end
 toc
 
 if plotForces == 1
-    plotLiftCoefficient(lift,added_mass,circulatory,s,t);
+    plotLiftCoefficient(lift,added_mass,added_mass_v,added_mass_a,circulatory,s,t);
 end
 if plotAoA == 1
     plotAlpha(Alpha,s,t);
